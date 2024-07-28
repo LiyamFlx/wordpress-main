@@ -1,0 +1,31 @@
+name: Deploy WordPress Theme
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4' # Specify the PHP version you need
+
+    - name: Sync files via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: 'ftp://your-ftp-server.com' # Directly using FTP credentials
+        ftp-username: 'your-ftp-username'       # Directly using FTP credentials
+        ftp-password: 'your-ftp-password'       # Directly using FTP credentials
+        local-dir: './my-theme'                 # Update with your theme directory if needed
+        remote-dir: '/path-to-your-wordpress/wp-content/themes/my-theme' # Update with the actual remote directory path
+
+    - name: Finalize deployment
+      run: echo "Deployment complete!"
